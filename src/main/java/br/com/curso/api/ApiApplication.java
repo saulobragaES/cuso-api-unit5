@@ -11,6 +11,6 @@ public class ApiApplication {
 		SpringApplication.run(ApiApplication.class, args);
 	}
 
-	Users user = new Users( 1, "Saulo", "saulobraga_es@hotmail.com", "123");
+	//Users user = new Users( 1, "Saulo", "saulobraga_es@hotmail.com", "123");
 
 }
