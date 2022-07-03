@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/user")
 public class UserResources {
@@ -23,4 +26,14 @@ public class UserResources {
     public ResponseEntity<UsersDTO> findById(@PathVariable Integer id){
         return ResponseEntity.ok().body(mapper.map(service.findById(id),UsersDTO.class));
     }
+
+    @GetMapping
+    public ResponseEntity<List<UsersDTO>> findAll() {
+        return  ResponseEntity.ok().body(
+                service.findAll()
+                       .stream()
+                       .map( x-> mapper.map( x, UsersDTO.class)).collect(Collectors.toList())
+        );
+    }
+
 }
