@@ -3,7 +3,6 @@ package br.com.curso.api.resources;
 import br.com.curso.api.domain.Users;
 import br.com.curso.api.domain.dto.UsersDTO;
 import br.com.curso.api.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +43,13 @@ public class UserResources {
                 .fromCurrentRequest().path("/{id}").buildAndExpand(service.create(obj).getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
+    @PutMapping(value = "/{id}")
+    public  ResponseEntity<UsersDTO> update( @PathVariable Integer id, @RequestBody UsersDTO obj) {
+        obj.setId(id);
+        Users newObj = service.update(obj);
+        return ResponseEntity.ok().body(mapper.map(newObj, UsersDTO.class));
+    }
+
 
 }
