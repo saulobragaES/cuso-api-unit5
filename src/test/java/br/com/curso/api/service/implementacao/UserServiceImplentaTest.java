@@ -3,6 +3,7 @@ package br.com.curso.api.service.implementacao;
 import br.com.curso.api.domain.Users;
 import br.com.curso.api.domain.dto.UsersDTO;
 import br.com.curso.api.repository.UserRepository;
+import br.com.curso.api.service.exceptions.ObjectNotFoundException;
 import org.h2.engine.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class UserServiceImplentaTest {
@@ -49,7 +52,7 @@ class UserServiceImplentaTest {
 
     @Test
     void quandoBuscarIdEntaoRetornInstanciaUsuario() {
-        Mockito.when(repository.findById(Mockito.anyInt())).thenReturn(optionalUsers);
+        when(repository.findById(anyInt())).thenReturn(optionalUsers);
 
         Users response = service.findById(ID);
 
@@ -60,6 +63,18 @@ class UserServiceImplentaTest {
         // assegurando que o ID que estou passando são iguais, pode inserir mais atributos se quiser
         Assertions.assertEquals(ID, response.getId());
         Assertions.assertEquals(NOME, response.getNome());
+    }
+
+    @Test
+    void quandoBuscarIdEntaoRetornUmObjetoNaoEncontradoException() {
+        when(repository.findById(anyInt())).thenThrow( new ObjectNotFoundException("Objeto não encontrado..."));
+
+        try {
+            service.findById(ID);
+        } catch (Exception ex ) {
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals("Objeto não encontrado...", ex.getMessage());
+        }
     }
 
     @Test
