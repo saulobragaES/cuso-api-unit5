@@ -130,7 +130,21 @@ class UserServiceImplentaTest {
     }
 
     @Test
-    void update() {
+    void quandoAtualizoEntaoRetornoSucesso() {
+        // Mocando o save
+        when(repository.save(any())).thenReturn(users);
+
+        // Chamando metodo
+        Users response = service.update(usersDTO);
+        // Assegurando que o metodo não vai ser nulo
+        assertNotNull(response);
+        // Objetos são iguais
+        assertEquals(Users.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NOME, response.getNome());
+        assertEquals(EMAIL, response.getEmail());
+        assertEquals(PASSWORD, response.getPassword());
+
     }
 
     @Test
