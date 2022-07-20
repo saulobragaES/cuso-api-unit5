@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserServiceImplentaTest {
@@ -32,6 +32,7 @@ class UserServiceImplentaTest {
     public static final String PASSWORD = "123";
     public static final String OBJETO_NÃO_ENCONTRADO = "Objeto não encontrado...";
     public static final int INDEX = 0;
+    public static final String E_MAIL_JA_CADASTRADO_NO_SISTEMA = "E-mail já cadastrado no sistema.";
     @InjectMocks
     private UserServiceImplenta service;
 
@@ -120,11 +121,12 @@ class UserServiceImplentaTest {
         when(repository.findByEmail(anyString())).thenReturn(optionalUsers);
 
         try {
-            optionalUsers.get().setId(2);
+            //Desabilita so para forçar erro
+            //optionalUsers.get().setId(2);
             service.create(usersDTO);
         } catch ( Exception ex ) {
             assertEquals(DataIntegratyViolationException.class, ex.getClass());
-            assertEquals("E-mail já cadastrado no sistema.", ex.getMessage());
+            assertEquals(E_MAIL_JA_CADASTRADO_NO_SISTEMA, ex.getMessage());
         }
 
     }
@@ -148,7 +150,29 @@ class UserServiceImplentaTest {
     }
 
     @Test
-    void delete() {
+    void quandoAtualizoEntaoRetornoViolacaoDadosIntegracao() {
+        // Mocando o save
+        when(repository.findByEmail(anyString())).thenReturn(optionalUsers);
+
+        try {
+            //Desabilita so para forçar erro
+            //optionalUsers.get().setId(2);
+            service.update(usersDTO);
+        } catch ( Exception ex ) {
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(E_MAIL_JA_CADASTRADO_NO_SISTEMA, ex.getMessage());
+        }
+
+    }
+
+    @Test
+    void deleteComSucesso() {
+        when(repository.findById(anyInt())).thenReturn(optionalUsers);
+        // Não faça nada quando parametro passado for inteiro
+        doNothing().when(repository).deleteById(anyInt());
+        service.delete(ID);
+        // se for chamado mais de uma vez está errado o teste, igual ao parametro passado.
+        verify(repository, times(1)).deleteById(anyInt());
     }
 
     private void startUser() {
