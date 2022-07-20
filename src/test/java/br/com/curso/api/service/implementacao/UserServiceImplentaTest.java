@@ -3,6 +3,7 @@ package br.com.curso.api.service.implementacao;
 import br.com.curso.api.domain.Users;
 import br.com.curso.api.domain.dto.UsersDTO;
 import br.com.curso.api.repository.UserRepository;
+import br.com.curso.api.service.exceptions.DataIntegratyViolationException;
 import br.com.curso.api.service.exceptions.ObjectNotFoundException;
 import org.h2.engine.User;
 import org.junit.jupiter.api.Assertions;
@@ -19,8 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -111,6 +111,21 @@ class UserServiceImplentaTest {
         assertEquals(NOME, response.getNome());
         assertEquals(EMAIL, response.getEmail());
         assertEquals(PASSWORD, response.getPassword());
+
+    }
+
+    @Test
+    void quandoCrioEntaoRetornoViolacaoDadosIntegracao() {
+        // Mocando o save
+        when(repository.findByEmail(anyString())).thenReturn(optionalUsers);
+
+        try {
+            optionalUsers.get().setId(2);
+            service.create(usersDTO);
+        } catch ( Exception ex ) {
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals("E-mail já cadastrado no sistema.", ex.getMessage());
+        }
 
     }
 
