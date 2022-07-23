@@ -3,17 +3,23 @@ package br.com.curso.api.resources;
 import br.com.curso.api.domain.Users;
 import br.com.curso.api.domain.dto.UsersDTO;
 import br.com.curso.api.service.implementacao.UserServiceImplenta;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class UserResourcesTest {
@@ -27,7 +33,7 @@ class UserResourcesTest {
     public static final String E_MAIL_JA_CADASTRADO_NO_SISTEMA = "E-mail já cadastrado no sistema.";
 
     private Users users;
-    private UsersDTO usersDTO
+    private UsersDTO usersDTO;
 
 
     @InjectMocks
@@ -46,7 +52,24 @@ class UserResourcesTest {
     }
 
     @Test
-    void findById() {
+    void quandoBuscaPeloIdEntaoRetornaSucesso() {
+        // Mocanto
+        when(service.findById(anyInt())).thenReturn(users);
+        when(mapper.map(any() , any())).thenReturn(usersDTO);
+
+        ResponseEntity<UsersDTO> response = resources.findById(ID);
+
+        // Primeira validação, o response não pode ser nulo
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(UsersDTO.class, response.getBody().getClass());
+
+        assertEquals( ID, response.getBody().getId());
+        assertEquals( NOME, response.getBody().getNome());
+        assertEquals( EMAIL, response.getBody().getEmail());
+        assertEquals( PASSWORD, response.getBody().getPassword());
+
     }
 
     @Test
