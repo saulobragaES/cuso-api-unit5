@@ -12,8 +12,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,7 +56,7 @@ class UserResourcesTest {
 
     @Test
     void quandoBuscaPeloIdEntaoRetornaSucesso() {
-        // Mocanto
+        // Mocando
         when(service.findById(anyInt())).thenReturn(users);
         when(mapper.map(any() , any())).thenReturn(usersDTO);
 
@@ -73,7 +76,24 @@ class UserResourcesTest {
     }
 
     @Test
-    void findAll() {
+    void whenFinAllThenReturnAListOfUsrDTO() {
+        when(service.findAll()).thenReturn(List.of(users));
+        when(mapper.map(any(), any())).thenReturn(usersDTO);
+
+        ResponseEntity<List<UsersDTO>> response = resources.findAll();
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        // se der erro aqui, ja quebra o teste e ai ja sabemos que não está OK
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(ArrayList.class, response.getBody().getClass());
+        assertEquals(UsersDTO.class, response.getBody().get(INDEX).getClass());
+
+        assertEquals(ID, response.getBody().get(INDEX).getId());
+        assertEquals(NOME, response.getBody().get(INDEX).getNome());
+        assertEquals(EMAIL, response.getBody().get(INDEX).getEmail());
+        assertEquals(PASSWORD, response.getBody().get(INDEX).getPassword());
     }
 
     @Test
