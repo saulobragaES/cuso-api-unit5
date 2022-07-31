@@ -3,15 +3,13 @@ package br.com.curso.api.service.implementacao;
 import br.com.curso.api.domain.Users;
 import br.com.curso.api.domain.dto.UsersDTO;
 import br.com.curso.api.repository.UserRepository;
-import br.com.curso.api.service.exceptions.DataIntegratyViolationException;
+import br.com.curso.api.service.exceptions.DataIntegrityViolationException;
 import br.com.curso.api.service.exceptions.ObjectNotFoundException;
-import org.h2.engine.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -126,7 +124,7 @@ class UserServiceImplentaTest {
             //optionalUsers.get().setId(2);
             service.create(usersDTO);
         } catch ( Exception ex ) {
-            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
             assertEquals(E_MAIL_JA_CADASTRADO_NO_SISTEMA, ex.getMessage());
         }
 
@@ -160,7 +158,7 @@ class UserServiceImplentaTest {
             //optionalUsers.get().setId(2);
             service.update(usersDTO);
         } catch ( Exception ex ) {
-            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
             assertEquals(E_MAIL_JA_CADASTRADO_NO_SISTEMA, ex.getMessage());
         }
 

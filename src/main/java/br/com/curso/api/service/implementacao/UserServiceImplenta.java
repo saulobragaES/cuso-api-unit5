@@ -4,10 +4,10 @@ import br.com.curso.api.domain.Users;
 import br.com.curso.api.domain.dto.UsersDTO;
 import br.com.curso.api.repository.UserRepository;
 import br.com.curso.api.service.UserService;
-import br.com.curso.api.service.exceptions.DataIntegratyViolationException;
 import br.com.curso.api.service.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public class UserServiceImplenta implements UserService {
     private void findByEmail(UsersDTO obj) {
         Optional<Users> users = repository.findByEmail(obj.getEmail());
         if(users.isPresent() && !users.get().getId().equals(obj.getId())) {
-            throw new DataIntegratyViolationException("E-mail já cadastrado no sistema.");
+            throw new DataIntegrityViolationException("E-mail já cadastrado no sistema.");
         }
 
     }

@@ -9,7 +9,9 @@ import lombok.Setter;
 
 @Setter @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+// Esse cara foi tirado pq não foi usado em nenhum lugar, por causa dele os testes
+// não estava sendo coberto 100%
+//@NoArgsConstructor
 public class UsersDTO {
 
     private  Integer id;

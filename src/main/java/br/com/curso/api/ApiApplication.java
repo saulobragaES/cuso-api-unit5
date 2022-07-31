@@ -1,6 +1,5 @@
 package br.com.curso.api;
 
-import br.com.curso.api.domain.Users;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

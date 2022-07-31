@@ -2,12 +2,11 @@ package br.com.curso.api.resources.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
+//@Setter não está sendo usado, então posso tirar para dar 100% cobertura ao teste
 @AllArgsConstructor
 public class StandardError {
 

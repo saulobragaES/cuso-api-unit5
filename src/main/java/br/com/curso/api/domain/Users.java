@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 
-@Data // gera todos os metodos necessários, @ToString, @Getter e @Setter
+@Data //gera todos os métodos necessários, @ToString, @Getter e @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
