@@ -22,7 +22,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserResourcesTest {
@@ -130,7 +130,17 @@ class UserResourcesTest {
     }
 
     @Test
-    void delete() {
+    void whenDeleteThenReturnSucesso() {
+        // Quando não tem retorno usa assim
+        doNothing().when(service).delete((anyInt()));
+
+        ResponseEntity<UsersDTO> response = resources.delete(ID);
+
+        assertNotNull(response);
+        assertEquals(ResponseEntity.class, response.getClass());
+        verify(service, times(1)).delete(anyInt());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
     }
 
     private void startUser() {
