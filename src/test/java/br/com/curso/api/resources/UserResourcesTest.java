@@ -35,8 +35,8 @@ class UserResourcesTest {
     public static final int INDEX = 0;
     public static final String E_MAIL_JA_CADASTRADO_NO_SISTEMA = "E-mail já cadastrado no sistema.";
 
-    private Users users;
-    private UsersDTO usersDTO;
+    private Users users = new Users();
+    private UsersDTO usersDTO = new UsersDTO();
 
 
     @InjectMocks
